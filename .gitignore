@@ -1,0 +1,107 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# データ（大容量ファイルは除外）
+data/preprocessed/*.png
+data/preprocessed/*.jpg
+data/outputs/descriptions/*.txt
+data/outputs/structured/*.json
+data/outputs/scores/*.json
+*.csv
+*.xlsx
+
+# モデル（重いので除外）
+models/*.pkl
+models/*.pt
+models/*.pth
+models/*.bin
+models/*.h5
+models/*.gguf
+models/*.ggml
+models/.cache/
+*.gguf
+*.ggml
+
+# 画像データ（大容量のため除外）
+data/images_human_inspect_n254/
+data/preprocessed/
+*.png
+*.jpg
+*.jpeg
+
+# 出力結果（オプション: サンプルのみコミット可）
+data/outputs/descriptions/
+data/outputs/structured/
+data/outputs/scores/
+data/outputs/*.csv
+data/outputs/*.json
+
+# ログ
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 一時ファイル
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# HuggingFace cache
+.cache/
+huggingface/
+models/.cache/
+
+# Ollama cache
+.ollama/
+
+# llama-cpp cache
+.llama_cache/
+
+# PyTorch
+.pytorch_cache/

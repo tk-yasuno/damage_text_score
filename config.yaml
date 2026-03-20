@@ -1,0 +1,111 @@
+# 損傷読解スコアリングシステム設定
+
+# データパス
+data:
+  input_images: "data/images_human_inspect_n254"
+  preprocessed: "data/preprocessed"
+  outputs:
+    descriptions: "data/outputs/descriptions"
+    structured: "data/outputs/structured"
+    scores: "data/outputs/scores"
+  annotations: "data/annotations.csv"
+
+# 前処理設定
+preprocessing:
+  resize:
+    max_width: 1024
+    max_height: 1024
+  denoise:
+    enabled: true
+    strength: 5
+  contrast:
+    enabled: true
+    clip_limit: 2.0
+    tile_grid_size: [8, 8]
+
+# Vision分析設定（モード選択）
+vision_mode: "llama_cpp"  # "llama_cpp" | "huggingface" | "ollama"
+
+# llama-cpp-python GGUF モード（推奨: 高速・軽量・GPU加速）
+llama_cpp_vision:
+  model_path: "models/ggml-model-q4_k.gguf"
+  mmproj_path: "models/mmproj-model-f16.gguf"
+  n_gpu_layers: -1  # -1 = すべてのレイヤーをGPUに配置
+  n_ctx: 4096
+  max_tokens: 300
+  temperature: 0.3
+  top_p: 0.9
+
+# HuggingFace Transformers モード（安定・高精度）
+granite_vision:
+  use_ollama: false  # HuggingFace Transformers使用（GPU確実動作）
+  ollama_model: "llava:7b"  # Ollamaモデル名（use_ollama=trueの場合のみ使用）
+  ollama_url: "http://localhost:11434"  # OllamaサーバーURL
+  model_name: "llava-hf/llava-1.5-7b-hf"  # HuggingFace版LLaVA（GPU使用）
+  device: "cuda"  # GPU使用
+  max_new_tokens: 300
+  temperature: 0.3
+  prompt_template: |
+    あなたは橋梁点検の専門家です。
+    次の画像に写る損傷を、土木構造物の専門用語を用いて簡潔に説明してください。
+    
+    必ず以下の情報を含めてください：
+    - 損傷の種類（ひび割れ、鉄筋露出、腐食、剥離、断面欠損など）
+    - 損傷の程度（軽微、中程度、重度）
+    - 損傷の位置・範囲
+    - 構造上のリスク
+
+# JSON構造化設定
+structuring:
+  use_ollama: true  # Ollamaの既存モデルを使用
+  ollama_model: "swallow8b-lora-n4000-v09-q4:latest"  # Ollamaモデル名
+  ollama_url: "http://localhost:11434"  # OllamaサーバーURL
+  model_name: "tokyotech-llm/Swallow-7b-instruct-v0.1"  # HuggingFace予備（使用しない）
+  device: "cuda"
+  max_new_tokens: 500
+  temperature: 0.1
+  prompt_template: |
+    以下の橋梁損傷説明文を、JSON形式に構造化してください。
+    
+    損傷説明文:
+    {description}
+    
+    以下のJSON形式で出力してください：
+    {{
+      "damage_type": "rebar_exposure | crack | corrosion | spalling | section_loss",
+      "severity": "low | medium | high",
+      "location": "girder | deck | bearing | pier | girder_bottom | support",
+      "risk": "structural | durability | aesthetic",
+      "description_ja": "元の説明文",
+      "key_features": ["特徴1", "特徴2"]
+    }}
+
+# スコアリング設定
+scoring:
+  rules_file: "models/scoring_rules.yaml"
+  
+  # ルールベース重み
+  weights:
+    damage_type: 0.35
+    severity: 0.40
+    location: 0.15
+    risk: 0.10
+  
+  # GAM補正（オプション）
+  gam:
+    enabled: false
+    model_path: "models/gam_scorer.pkl"
+    features: ["damage_type", "severity", "location", "risk", "rule_score"]
+
+# 実行設定
+execution:
+  batch_size: 4
+  num_workers: 2
+  save_intermediate: true
+  verbose: true
+
+# ログ設定
+logging:
+  level: "INFO"
+  output_dir: "logs"
+  save_predictions: true

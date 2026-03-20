@@ -1,0 +1,78 @@
+# 補修優先度スコアリングルール
+
+# 損傷種別スコア (0.0 - 1.0)
+damage_type_scores:
+  section_loss: 1.0        # 断面欠損（最重要）
+  rebar_exposure: 0.95     # 鉄筋露出
+  corrosion: 0.85          # 腐食
+  spalling: 0.75           # 剥離
+  crack: 0.60              # ひび割れ
+  stain: 0.30              # 汚れ
+  unknown: 0.50            # 不明
+
+# 重症度スコア (0.0 - 1.0)
+severity_scores:
+  high: 1.0
+  medium: 0.6
+  low: 0.3
+
+# 位置スコア (0.0 - 1.0)
+location_scores:
+  girder_bottom: 1.0       # 主桁下面（最重要）
+  girder: 0.95             # 主桁
+  bearing: 0.90            # 支承部
+  deck: 0.75               # 床版
+  pier: 0.70               # 橋脚
+  support: 0.85            # 支持部
+  expansion_joint: 0.80    # 伸縮装置
+  railing: 0.40            # 高欄
+  unknown: 0.50            # 不明
+
+# リスク種別スコア (0.0 - 1.0)
+risk_scores:
+  structural: 1.0          # 構造リスク
+  durability: 0.75         # 耐久性リスク
+  aesthetic: 0.30          # 美観リスク
+  unknown: 0.50            # 不明
+
+# 組み合わせボーナス（特定の組み合わせで優先度を上げる）
+combination_bonuses:
+  - condition:
+      damage_type: "section_loss"
+      location: "girder_bottom"
+    bonus: 0.1
+    description: "主桁下面の断面欠損は最優先"
+  
+  - condition:
+      damage_type: "rebar_exposure"
+      severity: "high"
+    bonus: 0.08
+    description: "重度の鉄筋露出は緊急対応"
+  
+  - condition:
+      damage_type: "corrosion"
+      location: "bearing"
+    bonus: 0.07
+    description: "支承部の腐食は機能に直結"
+  
+  - condition:
+      risk: "structural"
+      severity: "high"
+    bonus: 0.1
+    description: "高重症度の構造リスクは最優先"
+
+# 優先度スコアから段階への変換（最終出力）
+priority_thresholds:
+  5: 0.85  # 最優先（即時対応）
+  4: 0.70  # 高優先（早期対応）
+  3: 0.50  # 中優先（計画的対応）
+  2: 0.35  # 低優先（経過観察）
+  1: 0.00  # 最低優先（記録のみ）
+
+# 説明テンプレート
+priority_descriptions:
+  5: "即時補修が必要（構造安全性に重大な影響）"
+  4: "早期補修が必要（6ヶ月以内推奨）"
+  3: "計画的補修が必要（1〜2年以内）"
+  2: "経過観察が必要（定期点検で監視）"
+  1: "記録のみ（軽微な損傷）"

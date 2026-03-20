@@ -55,6 +55,58 @@ granite_vision:
     - 損傷の位置・範囲
     - 構造上のリスク
 
+# ===== v0.2 モデル比較用設定 =====
+
+# IBM Granite Vision 2B（産業・構造物画像に最適化、7Bは存在しないため2Bを使用）
+granite_vision_7b:
+  model_name: "models/granite-vision-3.3-2b"  # ローカルパス
+  device: "cuda"
+  max_tokens: 300
+  temperature: 0.3
+  torch_dtype: "float16"
+  prompt_template: |
+    You are a civil engineering expert specializing in bridge inspection.
+    Describe the structural damage visible in this image using technical terminology.
+    
+    Focus on the following:
+    - Damage type (crack, rebar exposure, corrosion, spalling, section loss)
+    - Severity level (minor, moderate, severe)
+    - Location and extent (girder, deck, bearing, pier, etc.)
+    - Structural risk assessment
+    
+    Be precise and avoid speculation. Use Japanese for the description.
+
+# Qwen2-VL 7B Instruct（最速・最高精度の7B VLM）
+qwen2vl_vision:
+  model_name: "Qwen/Qwen2-VL-7B-Instruct"
+  device: "cuda"
+  max_tokens: 300
+  temperature: 0.3
+  torch_dtype: "float16"
+  prompt_template: |
+    You are a civil engineering expert specializing in bridge inspection.
+    Describe the structural damage visible in this image using technical terminology.
+    
+    Focus on the following:
+    - Damage type (crack, rebar exposure, corrosion, spalling, section loss)
+    - Severity level (minor, moderate, severe)
+    - Location and extent (girder, deck, bearing, pier, etc.)
+    - Structural risk assessment
+    
+    Be precise and avoid speculation. Use Japanese for the description.
+
+# v0.2 モデル比較設定
+model_comparison:
+  enabled: true
+  models: ["granite_vision_7b", "qwen2vl_vision", "llava_1.5_7b"]
+  test_images: 10  # 比較用画像数
+  output_prefix: "v02"
+  evaluation_metrics:
+    - accuracy  # 損傷記述の精度
+    - hallucination  # ハルシネーション頻度
+    - json_stability  # JSON構造化の安定性
+    - speed  # 推論速度
+
 # JSON構造化設定
 structuring:
   use_ollama: true  # Ollamaの既存モデルを使用

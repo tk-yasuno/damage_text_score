@@ -48,27 +48,33 @@ data/preprocessed/*.jpg
 data/outputs/descriptions/*.txt
 data/outputs/structured/*.json
 data/outputs/scores/*.json
+# Exclude CSV except quantization results
 *.csv
+!llava_quantization*.csv
 *.xlsx
 
 # モデル（重いので除外）
-models/*.pkl
-models/*.pt
-models/*.pth
-models/*.bin
-models/*.h5
-models/*.gguf
-models/*.ggml
-models/.cache/
+models/
+*.pkl
+*.pt
+*.pth
+*.bin
+*.h5
 *.gguf
 *.ggml
 
 # 画像データ（大容量のため除外）
-data/images_human_inspect_n254/
+# Raw image data excluded, but keep quantization result plots
+data/images_human_inspect_n254/*.png
+data/images_human_inspect_n254/*.jpg
 data/preprocessed/
-*.png
-*.jpg
-*.jpeg
+# Allow quantization comparison plots
+!llava_quantization*.png
+!*_statistical_analysis.png
+
+# Concept notes and design documents
+docs/ConceptNote_*.jpg
+docs/ConceptNote_*.png
 
 # 出力結果（オプション: サンプルのみコミット可）
 data/outputs/descriptions/
@@ -97,6 +103,11 @@ desktop.ini
 huggingface/
 models/.cache/
 
+# v0.3 Fine-tuning data (work in progress)
+data/v03_fine_tuning/
+prepare_v03_dataset.py
+train_v03_qlora.py
+
 # Ollama cache
 .ollama/
 
@@ -105,3 +116,9 @@ models/.cache/
 
 # PyTorch
 .pytorch_cache/
+
+# Backup logs
+0_LogBAK
+
+# Failed implementations archive
+failed/

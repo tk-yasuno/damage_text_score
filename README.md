@@ -538,12 +538,4 @@ MIT License - See [LICENSE](LICENSE) for details
 
 ---
 
-## Contact
-
-**Project Maintainer**: [Your Name]  
-**Email**: [your.email@example.com]  
-**GitHub**: [@your-username](https://github.com/your-username)
-
----
-
 **Last Updated**: March 20, 2026 (v0.1.0)

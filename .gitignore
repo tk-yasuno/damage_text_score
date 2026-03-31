@@ -43,6 +43,15 @@ ENV/
 !.vscode/extensions.json
 
 # データ（大容量ファイルは除外）
+data/backup_zip_file/
+data/image_text_inspect_n10789/rank_c_images_n10789/
+data/image_text_inspect_n10789/master/
+data/outputs/BAK_checkpoint/
+data/outputs/Log_OLD/
+data/outputs/checkpoint/
+data/outputs/archive_premerge_*/
+data/preprocessed_640x480_n10789/
+data/preprocessed_640x480_n50/
 data/preprocessed/*.png
 data/preprocessed/*.jpg
 data/outputs/descriptions/*.txt

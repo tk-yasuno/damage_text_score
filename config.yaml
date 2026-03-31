@@ -110,7 +110,7 @@ model_comparison:
 # JSON構造化設定
 structuring:
   use_ollama: true  # Ollamaの既存モデルを使用
-  ollama_model: "swallow8b-lora-n4000-v09-q4:latest"  # Ollamaモデル名
+  ollama_model: "swallow8b-lora-n4000-v09-q4-gpu:latest"  # Ollamaモデル名（GPU強制指定版）
   ollama_url: "http://localhost:11434"  # OllamaサーバーURL
   model_name: "tokyotech-llm/Swallow-7b-instruct-v0.1"  # HuggingFace予備（使用しない）
   device: "cuda"

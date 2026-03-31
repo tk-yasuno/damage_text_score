@@ -33,11 +33,19 @@ class OllamaClient:
         """
         url = f"{self.base_url}/api/generate"
         
+        # options に入れるべきパラメータを分離
+        option_keys = {'temperature', 'num_predict', 'num_gpu', 'top_p', 'top_k', 'seed',
+                       'num_ctx', 'repeat_penalty', 'stop'}
+        options = {k: v for k, v in kwargs.items() if k in option_keys}
+        options['num_gpu'] = options.get('num_gpu', 99)  # GPU強制使用
+        extra = {k: v for k, v in kwargs.items() if k not in option_keys}
+        
         data = {
             "model": self.model,
             "prompt": prompt,
             "stream": False,
-            **kwargs
+            "options": options,
+            **extra
         }
         
         try:

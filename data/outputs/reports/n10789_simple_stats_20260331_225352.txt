@@ -1,0 +1,13 @@
+﻿merged_file=i:\ACT2025.5.26-2030\MVP\damage_text_score\data\outputs\inference_n10789_merged_final_20260331_225028.csv
+total_records=10789
+
+[damage_type distribution]
+rebar_exposure	5392	49.98%
+crack	5233	48.5%
+corrosion	156	1.45%
+section_loss	8	0.07%
+
+[severity distribution]
+high	7431	68.88%
+medium	3342	30.98%
+low	16	0.15%
